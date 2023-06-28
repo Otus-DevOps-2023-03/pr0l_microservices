@@ -3,7 +3,7 @@ services:
   post_db:
     image: mongo:3.2
     ports:
-      - ${db_port}:27017
+      - 27017:27017
     volumes:
       - post_db:/data/db
     networks:
