@@ -1,4 +1,4 @@
-ROM ruby:2.4-alpine3.7
+FROM ruby:2.4-alpine3.7
 
 #RUN apt-get update -qq && apt-get install -y build-essential
 RUN apk --update add build-base
