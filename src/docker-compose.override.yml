@@ -1,0 +1,40 @@
+version: '3.3'
+services:
+  post_db:
+    image: mongo:3.2
+    ports:
+      - ${db_port}:27017
+    volumes:
+      - post_db:/data/db
+    networks:
+      - back_net
+  ui:
+    build: ./ui
+    image: ${USERNAME}/ui:${ver_app}
+    ports:
+      - ${app_port}:9292/tcp
+    networks:
+      - reddit
+    depends_on:
+      - post_db
+    command: ["puma", "--debug", "-w", "2"]
+  post:
+    build: ./post-py
+    image: ${USERNAME}/post:${ver_app}
+    networks:
+      - reddit
+      - back_net
+  comment:
+    build: ./comment
+    image: ${USERNAME}/comment:${ver_app}
+    networks:
+      - reddit
+      - back_net
+    command: ["puma", "--debug", "-w", "2"]
+
+volumes:
+  post_db:
+
+networks:
+  reddit:
+  back_net:
