@@ -11,8 +11,7 @@ variables:
  DATABASE_URL: 'mongodb://mongo/user_posts'
 
 before_script:
-  - ls && pwd
-  - cd reddit
+  - gitlab-ci/reddit
   - gem install bundler -v 2.3.26
   - bundle install
 
