@@ -18,7 +18,7 @@ before_script:
 build_job:
   stage: build
   script:
-    - ls
+    - cd ../../
     - echo 'Building'
     - docker build -t reddit:$CI_ENVIRONMENT_SLUG docker-monolith/
     - docker run --name reddit -d --network=host reddit:$CI_ENVIRONMENT_SLUG
