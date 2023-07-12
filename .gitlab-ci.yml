@@ -18,11 +18,9 @@ before_script:
 build_job:
   stage: build
   script:
-    - cd ../../
-    - ls
-    - docker -V
+    - cd ../../docker-monolith
     - echo 'Building'
-    - docker build -t reddit:$CI_ENVIRONMENT_SLUG docker-monolith/
+    - docker build -t reddit:$CI_ENVIRONMENT_SLUG
     - docker run --name reddit -d --network=host reddit:$CI_ENVIRONMENT_SLUG
 
 test_unit_job:
