@@ -1,4 +1,6 @@
 # pr0l_microservices
+# Gitlab-ci
+Изучить как работают пайплайны
 
 # ДЗ по Docker-4
 В ходе выполнения ДЗ познакомились с сетями в докере, с утилитой docker-compose.
@@ -25,19 +27,19 @@ docker compose up -d
 
 Задания со ⭐
  1. Запуск контейнеров с другими алиасами и передача данных с помощью переменных.
-'''docker run -d --network=reddit --network-alias=post_db_01 --network-alias=comment_db_01 mongo:latest
+```docker run -d --network=reddit --network-alias=post_db_01 --network-alias=comment_db_01 mongo:latest
 docker run -d --network=reddit -e POST_DATABASE_HOST=post_db_01 -e POST_DATABASE=posts_01 --network-alias=post_01 pr0l/post:1.0
 docker run -d --network=reddit -e COMMENT_DATABASE_HOST=comment_db_01 -e ENV COMMENT_DATABASE=comments_01 --network-alias=comment_01 pr0l/comment:1.0
-docker run -d --network=reddit -e  POST_SERVICE_HOST=post_01 -e COMMENT_SERVICE_HOST=comment_01 -p 9292:9292 pr0l/ui:1.0'''
+docker run -d --network=reddit -e  POST_SERVICE_HOST=post_01 -e COMMENT_SERVICE_HOST=comment_01 -p 9292:9292 pr0l/ui:1.0```
 
 Образ на основе alpine Dockerfile.01.
-'''FROM alpine
+```FROM alpine
 RUN apk update --no-cache \
     && apk add --no-cache ruby ruby-dev ruby-bundler build-base \
     && gem install bundler --no-rdoc --no-ri \
-    && rm -rf /var/cache/apk/*'''
+    && rm -rf /var/cache/apk/*```
 собираем:
-'''docker build -t pr0l/ui:3.0 ./ui --file ui/Dockerfile.01'''
+```docker build -t pr0l/ui:3.0 ./ui --file ui/Dockerfile.01```
 
 
 # ДЗ по Docker-2
