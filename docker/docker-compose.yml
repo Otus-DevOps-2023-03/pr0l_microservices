@@ -14,7 +14,6 @@ services:
       reddit:
  
   ui:
-    build: ./ui
     image: ${USERNAME}/ui:${ver_app}
     ports:
       - ${app_port}:9292/tcp
@@ -25,7 +24,6 @@ services:
     depends_on:
       - post_db
   post:
-    build: ./post-py
     image: ${USERNAME}/post:${ver_app}
     networks:
       reddit:
@@ -35,7 +33,6 @@ services:
         aliases:
           - "post"
   comment:
-    build: ./comment
     image: ${USERNAME}/comment:${ver_app}
     networks:
       reddit:
