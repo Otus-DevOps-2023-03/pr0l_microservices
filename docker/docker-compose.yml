@@ -1,0 +1,79 @@
+version: '3.3'
+services:
+  post_db:
+    image: mongo:3.2
+    ports:
+      - 27017:27017
+    volumes:
+      - post_db:/data/db
+    networks:
+      back_net:
+        aliases:
+          - "post_db"
+          - "comment_db"
+      reddit:
+ 
+  ui:
+    image: ${USERNAME}/ui:${ver_app}
+    ports:
+      - ${app_port}:9292/tcp
+    networks:
+      reddit:
+        aliases:
+          - "ui"
+    depends_on:
+      - post_db
+  post:
+    image: ${USERNAME}/post:${ver_app}
+    networks:
+      reddit:
+        aliases:
+          - "post"
+      back_net:
+        aliases:
+          - "post"
+  comment:
+    image: ${USERNAME}/comment:${ver_app}
+    networks:
+      reddit:
+        aliases:
+          - "comment"
+      back_net:
+        aliases:
+          - "comment"
+  prometheus:
+    image: ${USERNAME}/prometheus
+    ports:
+      - '9090:9090'
+    networks:
+      reddit:
+        aliases:
+          - "prometheus"
+    volumes:
+      - prometheus_data:/prometheus
+    command: # Передаем доп параметры в командной строке
+      - '--config.file=/etc/prometheus/prometheus.yml'
+      - '--storage.tsdb.path=/prometheus'
+      - '--storage.tsdb.retention=1d' # Задаем время хранения метрик в 1 день
+  node-exporter:
+    image: prom/node-exporter:v0.15.2
+    user: root
+    volumes:
+      - /proc:/host/proc:ro
+      - /sys:/host/sys:ro
+      - /:/rootfs:ro
+    command:
+      - '--path.procfs=/host/proc'
+      - '--path.sysfs=/host/sys'
+      - '--collector.filesystem.ignored-mount-points="^/(sys|proc|dev|host|etc)($$|/)"'
+    networks:
+      reddit:
+      back_net:
+
+volumes:
+  post_db:
+  prometheus_data:
+
+networks:
+  reddit:
+  back_net:
